@@ -11,43 +11,56 @@ namespace DotNetWeather // Note: actual namespace depends on the project name.
     internal class Program
     {
         static async Task Main(string[] args)
-        {   
+        {
             var api_key = "fd0f221dcbc5cce7a9d7a2f832156646";
-
-            Console.WriteLine("===============================");
-            Console.WriteLine("Welcome to the weather app!");
-
-            var locationName = AskCity();
-
-            Console.WriteLine("-------------------------------");
-            Console.WriteLine($"Getting weather for {locationName}");
-
-            var data = await GetWeather(locationName, api_key);
-
-            if (data == "")
+            while (true)
             {
+                Console.WriteLine("*--=========================--*");
+                Console.WriteLine("Welcome to the weather app!");
+
+                var locationName = AskCity();
+
                 Console.WriteLine("-------------------------------");
-                Console.WriteLine("Sorry, we couldn't find that city.");
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine("Please try again.");
-                Console.WriteLine("===============================");
-                Console.WriteLine("Press any key to exit.");
-                Console.ReadKey();
-                return;
+                Console.WriteLine($"Getting weather for {locationName}");
+
+                var data = await GetWeather(locationName, api_key);
+
+                if (data == "")
+                {
+                    Console.WriteLine("-------------------------------");
+                    Console.WriteLine("Sorry, we couldn't find that city.");
+                    Console.WriteLine("-------------------------------");
+                    Console.WriteLine("Please try again.");
+                    Console.WriteLine("===============================");
+                    Console.WriteLine("Press any key to exit.");
+                    Console.ReadKey();
+                    return;
+                }
+                else
+                {
+                    var json = JObject.Parse(data);
+                    var weather = json["weather"][0]["main"].ToString();
+                    var tempCelcius = json["main"]["temp"].ToString();
+                    var windSpeed = json["wind"]["speed"].ToString();
+                    var humidity = json["main"]["humidity"].ToString();
+
+
+                    Console.WriteLine($"The weather is {weather}");
+                    Console.WriteLine($"The temperature is {tempCelcius}°C");
+                    Console.WriteLine($"The wind speed is {windSpeed}m/s");
+                    Console.WriteLine($"The humidity is {humidity}%");
+                    Console.WriteLine("*--=========================--*");
+                    // Ask if the user wants to try again
+                    Console.WriteLine("Do you want to try again? (y/n)");
+                    var input = Console.ReadKey();
+
+                    if (input.Key != ConsoleKey.Y && input.Key != ConsoleKey.Enter)
+                    {
+                        return;
+                    }
+                    Console.WriteLine();
+                }
             }
-
-            var json = JObject.Parse(data);
-            var weather = json["weather"][0]["main"].ToString();
-            var tempCelcius = json["main"]["temp"].ToString();
-            var windSpeed = json["wind"]["speed"].ToString();
-            var humidity = json["main"]["humidity"].ToString();
-
-
-            Console.WriteLine($"The weather is {weather}");
-            Console.WriteLine($"The temperature is {tempCelcius}°C");
-            Console.WriteLine($"The wind speed is {windSpeed}m/s");
-            Console.WriteLine($"The humidity is {humidity}%");
-            Console.WriteLine("===============================");
         }
 
         private static async Task<String> GetWeather(string location_name, string key)
@@ -55,24 +68,23 @@ namespace DotNetWeather // Note: actual namespace depends on the project name.
             var httpClient = new HttpClient();
 
             var url = $"https://api.openweathermap.org/data/2.5/weather?q={location_name}&limit=1&units=metric&appid={key}";
-            var data = await httpClient.GetStringAsync(url);
+            var response = await httpClient.GetAsync(url);
 
-            var data_json = JObject.Parse(data);
-
-            if (data_json["cod"].ToString() == "200")
+            if (response.IsSuccessStatusCode)
             {
+                String data = await response.Content.ReadAsStringAsync();
                 return data;
             }
             else
             {
-                Console.WriteLine("Error");
                 return "";
             }
         }
 
         private static String AskCity()
-        { 
-            while (true) {
+        {
+            while (true)
+            {
                 Console.Write("Enter the city name: ");
                 var locationName = Console.ReadLine();
                 if (locationName == null || locationName == "")
