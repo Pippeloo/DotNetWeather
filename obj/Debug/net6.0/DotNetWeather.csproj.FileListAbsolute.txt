@@ -13,3 +13,7 @@
 /home/jules/Projects/DotNetWeather/obj/Debug/net6.0/DotNetWeather.pdb
 /home/jules/Projects/DotNetWeather/obj/Debug/net6.0/DotNetWeather.genruntimeconfig.cache
 /home/jules/Projects/DotNetWeather/obj/Debug/net6.0/ref/DotNetWeather.dll
+/home/jules/Projects/DotNetWeather/bin/Debug/net6.0/System.Net.Http.Formatting.dll
+/home/jules/Projects/DotNetWeather/bin/Debug/net6.0/Newtonsoft.Json.dll
+/home/jules/Projects/DotNetWeather/bin/Debug/net6.0/Newtonsoft.Json.Bson.dll
+/home/jules/Projects/DotNetWeather/obj/Debug/net6.0/DotNetWeather.csproj.CopyComplete
