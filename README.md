@@ -2,6 +2,9 @@
 Created by Jules Torfs
 r0878800
 
+## Install .NET 6.0 SDK
+https://dotnet.microsoft.com/en-us/download/dotnet/6.0
+
 ## Install Packages
 dotnet add package Microsoft.AspNet.WebApi.Client --version 5.2.7
 
