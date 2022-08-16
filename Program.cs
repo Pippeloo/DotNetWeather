@@ -14,7 +14,7 @@ namespace DotNetWeather
         static async Task Main(string[] args)
         {
             // Setups the API Key
-            var api_key = "fd0f221dcbc5cce7a9d7a2f832156646";
+            var api_key = "API-KEY";
 
             while (true)
             {
